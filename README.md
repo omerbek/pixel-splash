@@ -9,3 +9,11 @@ Izgaraya oturan deterministik bir su sıçraması oluştur.
 ## İlham kaynağı
 
 Bu bağımsız sahne sentetik su istasyonu örnekleri kullanır. [Kaynak proje](https://github.com/patch-gg/pixelfx).
+
+## Sahne ayarları
+
+- Parçacık sayısı
+- Piksel boyutu
+- Döngü süresi (s)
+
+Sekiz saniyelik zaman çizelgesinden bir kare seçip **PNG indir** ile 720 × 405 piksel dışa aktarabilirsin.
