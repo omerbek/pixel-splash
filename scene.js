@@ -6,6 +6,15 @@ const mint = '#9ef4dc';
 const amber = '#ffcb7d';
 const ink = '#152129';
 const duration = 8;
+const controls = [...document.querySelectorAll('#settings input')];
+const settings = Object.fromEntries(controls.map(input => [
+  input.id, input.type === 'number' ? Number(input.value) : input.value
+]));
+controls.forEach(input => input.addEventListener('input', () => {
+  if (input.type === 'number' && (input.value === '' || !input.validity.valid)) return;
+  settings[input.id] = input.type === 'number' ? input.valueAsNumber : input.value;
+  draw();
+}));
 
 function rect(x, y, w, h, color) {
   ctx.fillStyle = color;
@@ -15,11 +24,11 @@ function rect(x, y, w, h, color) {
 const range = length => Array.from({length}, (_, index) => index);
 
 function render(t) {
-  const p = (t % 2) / 2;
-  range(46).forEach(i => {
+  const p = (t % settings.period) / settings.period;
+  range(settings.count).forEach(i => {
     const x = 360 + Math.cos(i * 2.4) * (35 + i * 4) * p;
     const y = 283 - (90 + i % 11 * 17) * Math.sin(Math.PI * p);
-    rect(Math.round(x / 8) * 8, Math.round(y / 8) * 8, 7, 7, i % 3 ? mint : amber);
+    rect(Math.round(x / settings.pixel) * settings.pixel, Math.round(y / settings.pixel) * settings.pixel, settings.pixel - 1, settings.pixel - 1, i % 3 ? mint : amber);
   });
   rect(240, 296, 240, 8, mint);
 }
@@ -62,6 +71,13 @@ play.addEventListener('click', () => {
 seek.addEventListener('input', () => {
   position = Number(seek.value);
   draw();
+});
+
+document.querySelector('#save').addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.download = 'pixel-splash.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 });
 
 draw();
